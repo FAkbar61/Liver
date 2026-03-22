@@ -1,0 +1,177 @@
+[
+  {
+    "id": "jaundice",
+    "label": "Kulit atau mata tampak kuning (ikterus)?",
+    "description": "Warna kuning pada kulit, bagian putih mata, atau kuku.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "dark_urine",
+    "label": "Urin berwarna gelap seperti teh atau cola?",
+    "description": "Urin berwarna coklat tua atau gelap pekat, bukan karena kurang minum.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "pale_stool",
+    "label": "Feses/tinja berwarna pucat, abu-abu, atau seperti dempul?",
+    "description": "Tinja yang berwarna sangat terang, bukan coklat normal.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "itchy_skin",
+    "label": "Gatal-gatal di seluruh tubuh tanpa ruam yang jelas?",
+    "description": "Rasa gatal menyeluruh (pruritus) yang tidak disebabkan alergi atau gigitan.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "right_upper_quadrant_pain",
+    "label": "Nyeri atau rasa tidak nyaman di perut kanan atas?",
+    "description": "Rasa sakit, berat, atau penuh di bawah tulang rusuk sebelah kanan.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "abdominal_swelling_ascites",
+    "label": "Perut membesar atau terasa penuh/buncit padahal tidak hamil?",
+    "description": "Pembengkakan perut akibat penumpukan cairan (asites).",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "fever",
+    "label": "Demam (suhu tubuh > 37.5°C)?",
+    "description": "Tubuh terasa panas, menggigil, atau suhu tubuh di atas normal.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "nausea_vomiting",
+    "label": "Mual atau sering muntah?",
+    "description": "Perasaan ingin muntah atau muntah yang terjadi berulang.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "fatigue",
+    "label": "Mudah lelah, lemas, atau tidak bertenaga?",
+    "description": "Rasa lelah yang tidak wajar meski sudah cukup istirahat.",
+    "category": "Gejala Utama",
+    "red_flag": false
+  },
+  {
+    "id": "loss_of_appetite",
+    "label": "Nafsu makan menurun drastis?",
+    "description": "Tidak ingin makan atau porsi makan berkurang sangat banyak.",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "weight_loss",
+    "label": "Berat badan turun secara signifikan tanpa diet khusus?",
+    "description": "Penurunan berat badan > 5% dalam 1-3 bulan tanpa sengaja.",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "leg_edema",
+    "label": "Kaki atau pergelangan kaki bengkak?",
+    "description": "Pembengkakan pada kaki, terutama di pergelangan kaki atau betis.",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "easy_bruising_bleeding",
+    "label": "Mudah memar atau pendarahan tidak berhenti (mis. gusi berdarah)?",
+    "description": "Memar timbul mudah, atau kulit berdarah/berdarah lama saat luka kecil.",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "spider_angioma",
+    "label": "Ada bintik-bintik merah seperti sarang laba-laba di kulit (spider nevi)?",
+    "description": "Bintik merah kecil dengan garis-garis memancar seperti kaki laba-laba.",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "muscle_wasting",
+    "label": "Otot-otot tubuh terasa mengecil atau melemah?",
+    "description": "Penurunan massa otot terutama di lengan dan kaki (wasting).",
+    "category": "Gejala Umum",
+    "red_flag": false
+  },
+  {
+    "id": "confusion_drowsy",
+    "label": "Mengalami kebingungan mendadak, bicara kacau, atau sulit dibangunkan? ⚠️ RED FLAG",
+    "description": "Perubahan kesadaran, disorientasi, atau penurunan tingkat kesadaran.",
+    "category": "Red Flag",
+    "red_flag": true
+  },
+  {
+    "id": "vomiting_blood_melena",
+    "label": "Muntah darah atau BAB berwarna hitam seperti aspal? ⚠️ RED FLAG",
+    "description": "Hematemesis (muntah darah merah/coklat) atau melena (tinja hitam lengket berbau).",
+    "category": "Red Flag",
+    "red_flag": true
+  },
+  {
+    "id": "hepatitis_risk",
+    "label": "Pernah didiagnosis hepatitis B/C, atau punya riwayat transfusi darah, tato, atau penggunaan jarum bersama?",
+    "description": "Faktor risiko hepatitis virus: riwayat penyakit, prosedur medis, atau perilaku berisiko.",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "heavy_alcohol_use",
+    "label": "Mengonsumsi alkohol dalam jumlah banyak (>3 gelas/hari) atau bertahun-tahun?",
+    "description": "Konsumsi alkohol berat dan kronik yang dapat merusak hati.",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "obesity_or_diabetes",
+    "label": "Kelebihan berat badan (obesitas), diabetes, atau kolesterol/trigliserida tinggi?",
+    "description": "Faktor metabolik yang berhubungan dengan fatty liver (NAFLD/NASH).",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "drug_hepatotoxic",
+    "label": "Rutin mengonsumsi obat-obatan keras, jamu-jamuan, atau suplemen dalam dosis tinggi?",
+    "description": "Obat/jamu yang berpotensi merusak hati (hepatotoksik): parasetamol dosis tinggi, isoniazid, dll.",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "family_liver_history",
+    "label": "Ada riwayat penyakit hati dalam keluarga (orang tua/saudara)?",
+    "description": "Riwayat keluarga dengan penyakit hati, termasuk hepatitis, sirosis, atau kanker hati.",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "prolonged_symptoms",
+    "label": "Gejala sudah berlangsung lebih dari 6 bulan?",
+    "description": "Durasi gejala yang berkepanjangan menunjukkan kemungkinan kondisi kronis.",
+    "category": "Riwayat Medis",
+    "red_flag": false
+  },
+  {
+    "id": "lab_elevated_liver",
+    "label": "Hasil pemeriksaan lab menunjukkan peningkatan enzim hati (SGOT/SGPT/bilirubin)?",
+    "description": "Hasil laboratorium yang menunjukkan kelainan fungsi atau kerusakan hati.",
+    "category": "Hasil Pemeriksaan",
+    "red_flag": false
+  },
+  {
+    "id": "previous_liver_diagnosis",
+    "label": "Pernah didiagnosis memiliki masalah pada hati sebelumnya oleh dokter?",
+    "description": "Riwayat diagnosis penyakit hati apapun dari tenaga medis sebelumnya.",
+    "category": "Hasil Pemeriksaan",
+    "red_flag": false
+  }
+]

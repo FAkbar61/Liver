@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}Basis Pengetahuan — LiverAI{% endblock %}
+
+{% block content %}
+<section class="admin-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-11">
+
+        <div class="page-header mb-4">
+          <h1 class="page-title"><i class="bi bi-diagram-3 me-2"></i>Basis Pengetahuan</h1>
+          <p class="page-subtitle">Kumpulan aturan (rules) yang digunakan oleh mesin inferensi Forward Chaining — tampilan read-only.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="stats-mini-card">
+              <div class="stats-mini-icon" style="background: linear-gradient(135deg,#667eea,#764ba2);">
+                <i class="bi bi-lightning-fill"></i>
+              </div>
+              <div class="stats-mini-num">{{ stats.total_rules }}</div>
+              <div class="stats-mini-label">Total Aturan</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stats-mini-card">
+              <div class="stats-mini-icon" style="background: linear-gradient(135deg,#f72585,#b5179e);">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+              </div>
+              <div class="stats-mini-num">{{ stats.red_flag_count }}</div>
+              <div class="stats-mini-label">Aturan Red Flag</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stats-mini-card">
+              <div class="stats-mini-icon" style="background: linear-gradient(135deg,#4facfe,#00f2fe);">
+                <i class="bi bi-clipboard-pulse"></i>
+              </div>
+              <div class="stats-mini-num">{{ stats.total_symptoms }}</div>
+              <div class="stats-mini-label">Parameter Gejala</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stats-mini-card">
+              <div class="stats-mini-icon" style="background: linear-gradient(135deg,#a8ff78,#78ffd6);">
+                <i class="bi bi-layers-fill" style="color:#0f3d2e;"></i>
+              </div>
+              <div class="stats-mini-num">{{ stats.groups|length }}</div>
+              <div class="stats-mini-label">Kelompok Aturan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar mb-3">
+          <div class="row g-2 align-items-center">
+            <div class="col-md-5">
+              <div class="search-input-wrap">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" id="ruleSearch" class="form-control search-input" placeholder="Cari aturan (ID, kelompok, penjelasan)..." />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <select id="groupFilter" class="form-select select-custom">
+                <option value="">Semua Kelompok</option>
+                {% for group in stats.groups %}
+                <option value="{{ group }}">{{ group }} ({{ stats.groups[group] }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-3">
+              <div class="d-flex gap-2">
+                <div class="form-check form-switch d-flex align-items-center gap-2 mb-0">
+                  <input class="form-check-input" type="checkbox" id="redFlagOnly" />
+                  <label class="form-check-label text-muted-light small" for="redFlagOnly">Red Flag saja</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rules Table -->
+        <div class="result-card">
+          <div class="result-card-body p-0">
+            <div class="table-responsive">
+              <table class="table rules-table mb-0" id="rulesTable">
+                <thead>
+                  <tr>
+                    <th style="width:80px;">ID</th>
+                    <th style="width:140px;">Kelompok</th>
+                    <th>Kondisi IF</th>
+                    <th>Aksi THEN</th>
+                    <th>Penjelasan</th>
+                    <th style="width:80px;">Red Flag</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for rule in rules %}
+                  <tr class="rule-row {% if rule.red_flag %}rule-row-danger{% endif %}"
+                      data-group="{{ rule.group }}"
+                      data-redflag="{{ rule.red_flag | lower }}"
+                      data-search="{{ rule.id }} {{ rule.group }} {{ rule.explain }}">
+                    <td>
+                      <span class="rule-id-badge {% if rule.red_flag %}rule-id-danger{% endif %}">
+                        {{ rule.id }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="rule-group-badge">{{ rule.group }}</span>
+                    </td>
+                    <td>
+                      <div class="conditions-list">
+                        {% for cond in rule.if_all %}
+                        <div class="cond-item">
+                          <span class="cond-fact">{{ cond.fact }}</span>
+                          <span class="cond-op">==</span>
+                          <span class="cond-val">{{ cond.equals }}</span>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        {% for af in rule.then.add_facts %}
+                        <div class="then-item then-fact">
+                          <i class="bi bi-plus-circle-fill me-1"></i>{{ af.fact }}={{ af.value }}
+                        </div>
+                        {% endfor %}
+                        {% for sc in rule.then.add_score %}
+                        <div class="then-item then-score">
+                          <i class="bi bi-bar-chart-fill me-1"></i>+{{ sc.weight }} → {{ sc.disease }}
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </td>
+                    <td>
+                      <span class="explain-text">{{ rule.explain }}</span>
+                    </td>
+                    <td class="text-center">
+                      {% if rule.red_flag %}
+                      <span class="badge bg-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Ya
+                      </span>
+                      {% else %}
+                      <span class="badge bg-secondary opacity-50">Tidak</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div id="noResults" class="text-center py-5 text-muted-light d-none">
+              <i class="bi bi-search fs-1 mb-2 d-block opacity-50"></i>
+              Tidak ada aturan yang cocok dengan pencarian
+            </div>
+          </div>
+        </div>
+
+        <!-- Symptoms Table -->
+        <div class="result-card mt-4">
+          <div class="result-card-header">
+            <i class="bi bi-list-check me-2"></i> Daftar Parameter Gejala / Fakta
+          </div>
+          <div class="result-card-body p-0">
+            <div class="table-responsive">
+              <table class="table rules-table mb-0">
+                <thead>
+                  <tr>
+                    <th>ID Fakta</th>
+                    <th>Pertanyaan (Label)</th>
+                    <th>Kategori</th>
+                    <th>Red Flag</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for s in symptoms %}
+                  <tr {% if s.red_flag %}class="rule-row-danger"{% endif %}>
+                    <td><code class="fact-code">{{ s.id }}</code></td>
+                    <td>{{ s.label }}</td>
+                    <td><span class="rule-group-badge">{{ s.category }}</span></td>
+                    <td class="text-center">
+                      {% if s.red_flag %}
+                      <span class="badge bg-danger"><i class="bi bi-exclamation-triangle-fill"></i> Ya</span>
+                      {% else %}
+                      <span class="badge bg-secondary opacity-50">Tidak</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const searchInput = document.getElementById("ruleSearch");
+  const groupFilter = document.getElementById("groupFilter");
+  const redFlagOnly = document.getElementById("redFlagOnly");
+  const noResults = document.getElementById("noResults");
+
+  function filterRules() {
+    const q = searchInput.value.toLowerCase();
+    const g = groupFilter.value;
+    const rfOnly = redFlagOnly.checked;
+    let visible = 0;
+
+    document.querySelectorAll(".rule-row").forEach(row => {
+      const searchData = row.getAttribute("data-search").toLowerCase();
+      const rowGroup = row.getAttribute("data-group");
+      const isRf = row.getAttribute("data-redflag") === "true";
+
+      const matchSearch = q === "" || searchData.includes(q);
+      const matchGroup = g === "" || rowGroup === g;
+      const matchRf = !rfOnly || isRf;
+
+      if (matchSearch && matchGroup && matchRf) {
+        row.style.display = "";
+        visible++;
+      } else {
+        row.style.display = "none";
+      }
+    });
+
+    noResults.classList.toggle("d-none", visible > 0);
+  }
+
+  searchInput.addEventListener("input", filterRules);
+  groupFilter.addEventListener("change", filterRules);
+  redFlagOnly.addEventListener("change", filterRules);
+</script>
+{% endblock %}

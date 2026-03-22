@@ -1,0 +1,563 @@
+[
+  {
+    "id": "R01",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "jaundice", "equals": true},
+      {"fact": "dark_urine", "equals": true},
+      {"fact": "pale_stool", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_cholestatic", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Triad ikterus + urin gelap + feses pucat adalah ciri khas pola kolestasis (hambatan aliran empedu).",
+    "red_flag": false
+  },
+  {
+    "id": "R02",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "jaundice", "equals": true},
+      {"fact": "dark_urine", "equals": true},
+      {"fact": "itchy_skin", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_cholestatic", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Ikterus disertai gatal menyeluruh dan urin gelap mengarah ke pola kolestasis.",
+    "red_flag": false
+  },
+  {
+    "id": "R03",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "jaundice", "equals": true},
+      {"fact": "fever", "equals": true},
+      {"fact": "nausea_vomiting", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_hepatocellular_acute", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Ikterus + demam + mual/muntah adalah pola kerusakan sel hati akut (hepatoseluler akut).",
+    "red_flag": false
+  },
+  {
+    "id": "R04",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "fatigue", "equals": true},
+      {"fact": "right_upper_quadrant_pain", "equals": true},
+      {"fact": "nausea_vomiting", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_hepatocellular_acute", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Kelelahan + nyeri perut kanan atas + mual adalah pola kerusakan sel hati.",
+    "red_flag": false
+  },
+  {
+    "id": "R05",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "abdominal_swelling_ascites", "equals": true},
+      {"fact": "leg_edema", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_portal_hypertension", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Asites (perut bengkak) + edema kaki menunjukkan tanda-tanda hipertensi portal.",
+    "red_flag": false
+  },
+  {
+    "id": "R06",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "easy_bruising_bleeding", "equals": true},
+      {"fact": "abdominal_swelling_ascites", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_liver_failure", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Mudah memar/berdarah + asites menunjukkan gangguan fungsi sintesis hati (gagal hati).",
+    "red_flag": false
+  },
+  {
+    "id": "R07",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "fatigue", "equals": true},
+      {"fact": "obesity_or_diabetes", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_metabolic", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Kelelahan + faktor metabolik (obesitas/DM) mengarah ke pola penyakit hati terkait metabolik.",
+    "red_flag": false
+  },
+  {
+    "id": "R08",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "weight_loss", "equals": true},
+      {"fact": "loss_of_appetite", "equals": true},
+      {"fact": "fatigue", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_chronic_liver", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Penurunan BB + kehilangan nafsu makan + lelah kronis menunjukkan pola penyakit hati kronik.",
+    "red_flag": false
+  },
+  {
+    "id": "R09",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "spider_angioma", "equals": true},
+      {"fact": "muscle_wasting", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_chronic_liver", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Spider nevi + pengecilan otot adalah tanda fisik penyakit hati kronik yang sudah lanjut.",
+    "red_flag": false
+  },
+  {
+    "id": "R10",
+    "group": "Pattern Detection",
+    "if_all": [
+      {"fact": "prolonged_symptoms", "equals": true},
+      {"fact": "hepatitis_risk", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_chronic_viral", "value": true}],
+      "add_score": [],
+      "recommendations": []
+    },
+    "explain": "Gejala berlangsung >6 bulan + faktor risiko hepatitis viral mengarah ke hepatitis kronik.",
+    "red_flag": false
+  },
+  {
+    "id": "R11",
+    "group": "Hepatitis Akut",
+    "if_all": [
+      {"fact": "pattern_hepatocellular_acute", "equals": true},
+      {"fact": "hepatitis_risk", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Akut", "weight": 0.40}],
+      "recommendations": ["Segera periksa HBsAg, Anti-HCV, SGOT, SGPT", "Istirahat cukup, hindari alkohol dan obat hepatotoksik"]
+    },
+    "explain": "Pola hepatoseluler akut dengan riwayat risiko hepatitis viral sangat mengarah ke Hepatitis Akut.",
+    "red_flag": false
+  },
+  {
+    "id": "R12",
+    "group": "Hepatitis Akut",
+    "if_all": [
+      {"fact": "jaundice", "equals": true},
+      {"fact": "fever", "equals": true},
+      {"fact": "hepatitis_risk", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Akut", "weight": 0.30}],
+      "recommendations": ["Tes serologi hepatitis (HBsAg, IgM Anti-HAV, Anti-HCV)"]
+    },
+    "explain": "Ikterus + demam + riwayat kontak/risiko hepatitis menguatkan dugaan Hepatitis Akut.",
+    "red_flag": false
+  },
+  {
+    "id": "R13",
+    "group": "Hepatitis Akut",
+    "if_all": [
+      {"fact": "drug_hepatotoxic", "equals": true},
+      {"fact": "pattern_hepatocellular_acute", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Akut", "weight": 0.25}],
+      "recommendations": ["Hentikan obat/jamu yang dicurigai hepatotoksik segera", "Konsultasi dokter sebelum menggunakan obat apapun"]
+    },
+    "explain": "Pola hepatoseluler akut dengan penggunaan obat hepatotoksik mengarah ke hepatitis akibat obat (DILI).",
+    "red_flag": false
+  },
+  {
+    "id": "R14",
+    "group": "Hepatitis Akut",
+    "if_all": [
+      {"fact": "lab_elevated_liver", "equals": true},
+      {"fact": "fever", "equals": true},
+      {"fact": "nausea_vomiting", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Akut", "weight": 0.20}],
+      "recommendations": ["Pantau enzim hati SGOT/SGPT secara berkala"]
+    },
+    "explain": "Hasil lab enzim hati tinggi + demam + mual mendukung peradangan hati akut.",
+    "red_flag": false
+  },
+  {
+    "id": "R15",
+    "group": "Hepatitis Kronis",
+    "if_all": [
+      {"fact": "pattern_chronic_viral", "equals": true},
+      {"fact": "fatigue", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Kronis", "weight": 0.40}],
+      "recommendations": ["Pemeriksaan HBsAg, Anti-HCV, viral load", "Konsultasi ke hepatolog/spesialis penyakit dalam"]
+    },
+    "explain": "Pola kronik viral + kelelahan pada pasien dengan riwayat hepatitis sangat mengarah ke Hepatitis Kronis.",
+    "red_flag": false
+  },
+  {
+    "id": "R16",
+    "group": "Hepatitis Kronis",
+    "if_all": [
+      {"fact": "hepatitis_risk", "equals": true},
+      {"fact": "prolonged_symptoms", "equals": true},
+      {"fact": "lab_elevated_liver", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Kronis", "weight": 0.35}],
+      "recommendations": ["USG abdomen dan fibroskan untuk menilai fibrosis hati", "Terapi antiviral bila terbukti hepatitis B atau C kronik"]
+    },
+    "explain": "Riwayat hepatitis + gejala >6 bulan + lab abnormal sangat mendukung Hepatitis Kronis.",
+    "red_flag": false
+  },
+  {
+    "id": "R17",
+    "group": "Hepatitis Kronis",
+    "if_all": [
+      {"fact": "pattern_chronic_liver", "equals": true},
+      {"fact": "hepatitis_risk", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Hepatitis Kronis", "weight": 0.25}],
+      "recommendations": ["Pemeriksaan SGOT/SGPT rutin setiap 6 bulan"]
+    },
+    "explain": "Pola kronis hati + riwayat risiko hepatitis mendukung dugaan Hepatitis Kronis.",
+    "red_flag": false
+  },
+  {
+    "id": "R18",
+    "group": "Fatty Liver",
+    "if_all": [
+      {"fact": "pattern_metabolic", "equals": true},
+      {"fact": "right_upper_quadrant_pain", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Fatty Liver / NAFLD", "weight": 0.40}],
+      "recommendations": ["USG abdomen untuk melihat lemak di hati", "Perbaiki pola makan, kurangi lemak dan gula", "Olahraga rutin minimal 150 menit/minggu"]
+    },
+    "explain": "Faktor metabolik + nyeri perut kanan atas mengarah ke fatty liver (penumpukan lemak di hati).",
+    "red_flag": false
+  },
+  {
+    "id": "R19",
+    "group": "Fatty Liver",
+    "if_all": [
+      {"fact": "obesity_or_diabetes", "equals": true},
+      {"fact": "fatigue", "equals": true},
+      {"fact": "loss_of_appetite", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Fatty Liver / NAFLD", "weight": 0.35}],
+      "recommendations": ["Cek profil lipid, gula darah puasa, dan SGOT/SGPT", "Konsultasi diet dengan ahli gizi"]
+    },
+    "explain": "Obesitas/DM disertai kelelahan dan penurunan nafsu makan mengarah ke NAFLD.",
+    "red_flag": false
+  },
+  {
+    "id": "R20",
+    "group": "Fatty Liver",
+    "if_all": [
+      {"fact": "obesity_or_diabetes", "equals": true},
+      {"fact": "weight_loss", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Fatty Liver / NAFLD", "weight": 0.20}],
+      "recommendations": ["USG abdomen dan pemeriksaan fungsi hati"]
+    },
+    "explain": "Kondisi metabolik dengan penurunan berat badan dapat menandakan progresi NAFLD ke NASH.",
+    "red_flag": false
+  },
+  {
+    "id": "R21",
+    "group": "Fatty Liver",
+    "if_all": [
+      {"fact": "heavy_alcohol_use", "equals": true},
+      {"fact": "right_upper_quadrant_pain", "equals": true},
+      {"fact": "fatigue", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Fatty Liver / NAFLD", "weight": 0.30}],
+      "recommendations": ["Hentikan konsumsi alkohol sepenuhnya", "Pemeriksaan fungsi hati dan USG abdomen"]
+    },
+    "explain": "Alkohol berat + nyeri perut kanan atas + kelelahan mengarah ke fatty liver alkoholik.",
+    "red_flag": false
+  },
+  {
+    "id": "R22",
+    "group": "Sirosis",
+    "if_all": [
+      {"fact": "pattern_portal_hypertension", "equals": true},
+      {"fact": "pattern_chronic_liver", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_decompensation_risk", "value": true}],
+      "add_score": [{"disease": "Sirosis", "weight": 0.45}],
+      "recommendations": ["Evaluasi fibroskan/biopsi hati", "USG abdomen + foto polos abdomen", "Konsultasi hepatolog segera"]
+    },
+    "explain": "Hipertensi portal + pola kronik hati adalah kombinasi klinis kuat untuk Sirosis.",
+    "red_flag": false
+  },
+  {
+    "id": "R23",
+    "group": "Sirosis",
+    "if_all": [
+      {"fact": "pattern_liver_failure", "equals": true},
+      {"fact": "pattern_chronic_liver", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "pattern_decompensation_risk", "value": true}],
+      "add_score": [{"disease": "Sirosis", "weight": 0.40}],
+      "recommendations": ["Evaluasi fungsi sintesis hati: albumin, PT/INR, bilirubin", "Pertimbangkan rawat inap untuk observasi"]
+    },
+    "explain": "Gagal sintesis hati + pola kronik menunjukkan Sirosis yang mulai dekompensasi.",
+    "red_flag": false
+  },
+  {
+    "id": "R24",
+    "group": "Sirosis",
+    "if_all": [
+      {"fact": "spider_angioma", "equals": true},
+      {"fact": "abdominal_swelling_ascites", "equals": true},
+      {"fact": "easy_bruising_bleeding", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Sirosis", "weight": 0.35}],
+      "recommendations": ["Pemeriksaan albumin serum, PT/INR, trombosit", "Skrining varises esofagus via endoskopi"]
+    },
+    "explain": "Spider nevi + asites + koagulopati adalah stigmata klasik Sirosis lanjut.",
+    "red_flag": false
+  },
+  {
+    "id": "R25",
+    "group": "Sirosis",
+    "if_all": [
+      {"fact": "previous_liver_diagnosis", "equals": true},
+      {"fact": "pattern_portal_hypertension", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Sirosis", "weight": 0.30}],
+      "recommendations": ["Tindak lanjut dengan hepatolog untuk staging fibrosis"]
+    },
+    "explain": "Riwayat penyakit hati sebelumnya + tanda hipertensi portal menguatkan dugaan Sirosis.",
+    "red_flag": false
+  },
+  {
+    "id": "R26",
+    "group": "Kolestasis",
+    "if_all": [
+      {"fact": "pattern_cholestatic", "equals": true},
+      {"fact": "right_upper_quadrant_pain", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Kolestasis / Gangguan Empedu", "weight": 0.45}],
+      "recommendations": ["USG abdomen untuk menilai saluran empedu dan kandung empedu", "Pemeriksaan bilirubin direk/indirek, gamma-GT, ALP"]
+    },
+    "explain": "Pola kolestasis + nyeri perut kanan atas sangat mengarah ke obstruksi saluran empedu atau kolangitis.",
+    "red_flag": false
+  },
+  {
+    "id": "R27",
+    "group": "Kolestasis",
+    "if_all": [
+      {"fact": "pattern_cholestatic", "equals": true},
+      {"fact": "itchy_skin", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Kolestasis / Gangguan Empedu", "weight": 0.35}],
+      "recommendations": ["Evaluasi profil bilirubin lengkap", "Pertimbangkan MRCP untuk pencitraan saluran empedu"]
+    },
+    "explain": "Pola kolestasis + gatal menyeluruh kuat mengarah ke Kolestasis dengan akumulasi garam empedu.",
+    "red_flag": false
+  },
+  {
+    "id": "R28",
+    "group": "Kolestasis",
+    "if_all": [
+      {"fact": "jaundice", "equals": true},
+      {"fact": "pale_stool", "equals": true},
+      {"fact": "dark_urine", "equals": true},
+      {"fact": "itchy_skin", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Kolestasis / Gangguan Empedu", "weight": 0.30}],
+      "recommendations": ["Evaluasi MRCP/CT scan abdomen untuk menilai obstruksi"]
+    },
+    "explain": "Tetriad kolestasis lengkap (ikterus, feses pucat, urin gelap, gatal) sangat mengarah ke obstruksi empedu.",
+    "red_flag": false
+  },
+  {
+    "id": "R29",
+    "group": "Kolestasis",
+    "if_all": [
+      {"fact": "pattern_cholestatic", "equals": true},
+      {"fact": "fever", "equals": true},
+      {"fact": "right_upper_quadrant_pain", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Kolestasis / Gangguan Empedu", "weight": 0.25}],
+      "recommendations": ["Waspadai kolangitis akut, segera konsultasi dokter bedah/gastroenterologi"]
+    },
+    "explain": "Triad Charcot (ikterus, demam, nyeri kanan atas) mengarah ke kolangitis — kondisi yang perlu evaluasi segera.",
+    "red_flag": false
+  },
+  {
+    "id": "R30",
+    "group": "Red Flag",
+    "if_all": [
+      {"fact": "confusion_drowsy", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "red_flag_igd", "value": true}],
+      "add_score": [{"disease": "Sirosis", "weight": 0.20}],
+      "recommendations": ["⚠️ SEGERA KE IGD — Gangguan kesadaran bisa menandakan Ensefalopati Hepatik yang mengancam jiwa"]
+    },
+    "explain": "Kebingungan atau penurunan kesadaran pada pasien dengan gejala hati adalah tanda Ensefalopati Hepatik — DARURAT MEDIS.",
+    "red_flag": true
+  },
+  {
+    "id": "R31",
+    "group": "Red Flag",
+    "if_all": [
+      {"fact": "vomiting_blood_melena", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "red_flag_igd", "value": true}],
+      "add_score": [{"disease": "Sirosis", "weight": 0.25}],
+      "recommendations": ["⚠️ SEGERA KE IGD — Muntah darah atau BAB hitam bisa akibat perdarahan varises yang mengancam jiwa"]
+    },
+    "explain": "Muntah darah (hematemesis) atau tinja hitam (melena) menunjukkan perdarahan saluran cerna atas — DARURAT MEDIS.",
+    "red_flag": true
+  },
+  {
+    "id": "R32",
+    "group": "Red Flag",
+    "if_all": [
+      {"fact": "confusion_drowsy", "equals": true},
+      {"fact": "abdominal_swelling_ascites", "equals": true}
+    ],
+    "then": {
+      "add_facts": [{"fact": "red_flag_igd", "value": true}],
+      "add_score": [{"disease": "Sirosis", "weight": 0.30}],
+      "recommendations": ["⚠️ SEGERA KE IGD — Kombinasi asites + ensefalopati menunjukkan Sirosis Dekompensata berat"]
+    },
+    "explain": "Asites + gangguan kesadaran pada pasien hati menunjukkan Sirosis Dekompensata — kondisi gawat darurat.",
+    "red_flag": true
+  },
+  {
+    "id": "R33",
+    "group": "Reinforcement",
+    "if_all": [
+      {"fact": "family_liver_history", "equals": true},
+      {"fact": "hepatitis_risk", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [
+        {"disease": "Hepatitis Kronis", "weight": 0.15},
+        {"disease": "Sirosis", "weight": 0.10}
+      ],
+      "recommendations": ["Skrining hepatitis B/C untuk seluruh anggota keluarga dekat"]
+    },
+    "explain": "Riwayat keluarga penyakit hati + paparan hepatitis meningkatkan risiko hepatitis kronik dan komplikasinya.",
+    "red_flag": false
+  },
+  {
+    "id": "R34",
+    "group": "Reinforcement",
+    "if_all": [
+      {"fact": "heavy_alcohol_use", "equals": true},
+      {"fact": "pattern_chronic_liver", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [
+        {"disease": "Sirosis", "weight": 0.20},
+        {"disease": "Fatty Liver / NAFLD", "weight": 0.15}
+      ],
+      "recommendations": ["Hentikan alkohol sepenuhnya — ini langkah terpenting", "Evaluasi dengan hepatolog untuk staging penyakit"]
+    },
+    "explain": "Alkohol berat + gejala kronik hati meningkatkan skor untuk Sirosis Alkoholik dan Fatty Liver.",
+    "red_flag": false
+  },
+  {
+    "id": "R35",
+    "group": "Reinforcement",
+    "if_all": [
+      {"fact": "lab_elevated_liver", "equals": true},
+      {"fact": "pattern_chronic_liver", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [
+        {"disease": "Hepatitis Kronis", "weight": 0.15},
+        {"disease": "Fatty Liver / NAFLD", "weight": 0.10}
+      ],
+      "recommendations": ["Pemantauan SGOT/SGPT berkala setiap 3-6 bulan", "Evaluasi untuk fibrosis hati dengan Fibroskan atau biopsi"]
+    },
+    "explain": "Enzim hati yang tinggi pada gejala kronik menguatkan hepatitis kronik atau fatty liver progresif.",
+    "red_flag": false
+  },
+  {
+    "id": "R36",
+    "group": "Reinforcement",
+    "if_all": [
+      {"fact": "pattern_decompensation_risk", "equals": true},
+      {"fact": "muscle_wasting", "equals": true}
+    ],
+    "then": {
+      "add_facts": [],
+      "add_score": [{"disease": "Sirosis", "weight": 0.20}],
+      "recommendations": ["Evaluasi skor Child-Pugh dan MELD untuk penilaian prognosis", "Pertimbangkan konsultasi transplantasi hati"]
+    },
+    "explain": "Risiko dekompensasi dengan sarcopenia (pengecilan otot) menandakan Sirosis stadium lanjut.",
+    "red_flag": false
+  }
+]

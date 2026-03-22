@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% block title %}Hasil Skrining — LiverAI{% endblock %}
+
+{% block content %}
+<section class="result-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+
+        <!-- Back Button -->
+        <div class="mb-4">
+          <a href="{{ url_for('index') }}" class="btn btn-outline-ghost">
+            <i class="bi bi-arrow-left me-1"></i> Skrining Ulang
+          </a>
+        </div>
+
+        <!-- ══ RED FLAG ALERT ══════════════════════════════ -->
+        {% if result.red_flags %}
+        <div class="red-flag-alert-banner mb-4 animate-slide-in">
+          <div class="d-flex align-items-start gap-3">
+            <div class="red-flag-icon-wrap">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <div>
+              <h4 class="mb-1 fw-700">⚠️ SEGERA KE IGD RUMAH SAKIT</h4>
+              <p class="mb-2">Sistem mendeteksi <strong>{{ result.red_flags|length }} tanda bahaya</strong> yang memerlukan penanganan medis segera.</p>
+              <ul class="mb-0 ps-3">
+                {% for rf in result.red_flags %}
+                <li class="mb-1"><strong>[{{ rf.rule_id }}]</strong> {{ rf.message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ SELECTED SYMPTOMS SUMMARY ═════════════════════ -->
+        {% if selected_symptoms %}
+        <div class="result-card mb-4 animate-fade-in" style="animation-delay: 0.1s;">
+          <div class="result-card-header">
+            <i class="bi bi-clipboard-check me-2"></i> Gejala yang Dilaporkan
+            <span class="badge-count ms-2">{{ selected_symptoms|length }}</span>
+          </div>
+          <div class="result-card-body">
+            <div class="symptom-tags">
+              {% for s in selected_symptoms %}
+              <span class="symptom-tag {% if s.red_flag %}symptom-tag-danger{% endif %}">
+                {% if s.red_flag %}<i class="bi bi-exclamation-triangle-fill me-1"></i>{% else %}<i class="bi bi-check-circle-fill me-1"></i>{% endif %}
+                {{ s.label | replace(" ⚠️ RED FLAG", "") }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ INSUFFICIENT DATA ═══════════════════════════ -->
+        {% if not result.has_significant and not result.red_flags %}
+        <div class="no-result-card mb-4 animate-fade-in">
+          <div class="no-result-icon">
+            <i class="bi bi-search-heart"></i>
+          </div>
+          <h3 class="no-result-title">Data Belum Cukup</h3>
+          <p class="no-result-desc">
+            Berdasarkan gejala yang Anda laporkan, sistem belum dapat mengidentifikasi pola penyakit hati yang signifikan dengan keyakinan yang cukup. 
+            Hal ini <strong>tidak berarti Anda sehat</strong> — bisa jadi gejala masih awal atau perlu pemeriksaan lebih lanjut.
+          </p>
+          <div class="alert alert-info-custom mt-3">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>Rekomendasi:</strong> Konsultasikan kondisi Anda ke dokter atau klinik kesehatan untuk pemeriksaan fisik dan laboratorium yang lebih menyeluruh.
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ TOP 3 DIAGNOSES ════════════════════════════ -->
+        {% if result.top_3 %}
+        <div class="result-card mb-4 animate-fade-in" style="animation-delay: 0.2s;">
+          <div class="result-card-header">
+            <i class="bi bi-bar-chart-fill me-2"></i> Dugaan Kondisi (Top {{ result.top_3|length }})
+          </div>
+          <div class="result-card-body">
+            {% for item in result.top_3 %}
+            <div class="disease-result-item {% if loop.first %}disease-result-top{% endif %} mb-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  {% if loop.first %}
+                  <div class="rank-badge rank-1"><i class="bi bi-trophy-fill"></i></div>
+                  {% elif loop.index == 2 %}
+                  <div class="rank-badge rank-2"><i class="bi bi-award-fill"></i></div>
+                  {% else %}
+                  <div class="rank-badge rank-3"><i class="bi bi-patch-check-fill"></i></div>
+                  {% endif %}
+                  <div>
+                    <div class="disease-name">{{ item.disease }}</div>
+                    <div class="disease-label-sub">Dugaan berdasarkan analisis aturan</div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="confidence-badge confidence-{{ item.confidence_class }}">
+                    {{ item.confidence }}
+                  </span>
+                  <span class="score-num">{{ item.score_percent }}%</span>
+                </div>
+              </div>
+              <div class="score-bar-wrap">
+                <div class="score-bar">
+                  <div class="score-bar-fill score-fill-{{ item.confidence_class }}" 
+                       style="width: 0%"
+                       data-target="{{ item.score_percent }}%"
+                       aria-valuenow="{{ item.score_percent }}"
+                       aria-valuemin="0" aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Legend -->
+            <div class="confidence-legend mt-3">
+              <span class="legend-item"><span class="legend-dot legend-dot-high"></span> ≥70% Tinggi</span>
+              <span class="legend-item"><span class="legend-dot legend-dot-medium"></span> 40–69% Sedang</span>
+              <span class="legend-item"><span class="legend-dot legend-dot-low"></span> &lt;40% Rendah</span>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ RECOMMENDATIONS ════════════════════════════ -->
+        {% if result.recommendations %}
+        <div class="result-card mb-4 animate-fade-in" style="animation-delay: 0.3s;">
+          <div class="result-card-header">
+            <i class="bi bi-clipboard2-heart me-2"></i> Rekomendasi Tindak Lanjut
+          </div>
+          <div class="result-card-body">
+            <ul class="recommendation-list">
+              {% for rec in result.recommendations %}
+              <li class="rec-item {% if '⚠️' in rec or 'IGD' in rec %}rec-item-urgent{% endif %}">
+                {% if '⚠️' in rec or 'IGD' in rec %}
+                <i class="bi bi-exclamation-triangle-fill rec-icon rec-icon-urgent"></i>
+                {% else %}
+                <i class="bi bi-arrow-right-circle-fill rec-icon"></i>
+                {% endif %}
+                {{ rec | replace("⚠️ SEGERA KE IGD — ", "") }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ INFERENCE TRACE ════════════════════════════ -->
+        {% if result.fired_rules %}
+        <div class="result-card mb-4 animate-fade-in" style="animation-delay: 0.4s;">
+          <div class="result-card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-cpu me-2"></i> Kenapa Hasil Ini Keluar?</span>
+            <span class="badge-count">{{ result.total_rules_fired }} aturan aktif</span>
+          </div>
+          <div class="result-card-body">
+            <p class="text-muted-light small mb-3">
+              Penjelasan penalaran mesin Forward Chaining — aturan mana yang terpicu dan mengapa.
+            </p>
+
+            <div class="trace-meta mb-3 d-flex gap-4">
+              <div class="trace-meta-item">
+                <i class="bi bi-arrow-repeat me-1 text-primary"></i>
+                <strong>{{ result.iterations }}</strong> iterasi
+              </div>
+              <div class="trace-meta-item">
+                <i class="bi bi-lightning-fill me-1 text-warning"></i>
+                <strong>{{ result.total_rules_fired }}</strong> rule aktif
+              </div>
+            </div>
+
+            <div class="accordion trace-accordion" id="traceAccordion">
+              {% for rule in result.fired_rules %}
+              <div class="trace-item {% if rule.is_red_flag %}trace-item-danger{% endif %}">
+                <div class="trace-item-header" data-bs-toggle="collapse" data-bs-target="#trace-{{ loop.index }}">
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="rule-id-badge {% if rule.is_red_flag %}rule-id-danger{% endif %}">
+                      {% if rule.is_red_flag %}<i class="bi bi-exclamation-triangle-fill me-1"></i>{% endif %}
+                      {{ rule.rule_id }}
+                    </span>
+                    <span class="rule-group-badge">{{ rule.group }}</span>
+                    <span class="trace-explain-preview">{{ rule.explain[:75] }}{% if rule.explain|length > 75 %}...{% endif %}</span>
+                  </div>
+                  <i class="bi bi-chevron-down trace-chevron"></i>
+                </div>
+                <div class="collapse {% if loop.index <= 3 %}show{% endif %}" id="trace-{{ loop.index }}">
+                  <div class="trace-item-body">
+                    <p class="trace-explain mb-3">{{ rule.explain }}</p>
+
+                    <!-- Triggered facts -->
+                    <div class="mb-2">
+                      <div class="trace-section-label"><i class="bi bi-input-cursor-text me-1"></i> Fakta yang memicu (IF):</div>
+                      <div class="d-flex flex-wrap gap-2 mt-1">
+                        {% for tf in rule.triggered_facts %}
+                        <span class="fact-badge">{{ tf.fact }} = {{ tf.value }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    {% if rule.added_facts %}
+                    <div class="mb-2">
+                      <div class="trace-section-label"><i class="bi bi-plus-circle me-1"></i> Fakta baru yang ditambahkan (THEN):</div>
+                      <div class="d-flex flex-wrap gap-2 mt-1">
+                        {% for af in rule.added_facts %}
+                        <span class="fact-badge fact-badge-new">{{ af.fact }} = {{ af.value }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endif %}
+
+                    {% if rule.added_scores %}
+                    <div>
+                      <div class="trace-section-label"><i class="bi bi-plus-square me-1"></i> Skor yang ditambahkan:</div>
+                      <div class="d-flex flex-wrap gap-2 mt-1">
+                        {% for sc in rule.added_scores %}
+                        <span class="score-badge">+{{ "%.2f"|format(sc.weight) }} untuk {{ sc.disease }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ══ ACTION BUTTONS ═════════════════════════════ -->
+        <div class="d-flex justify-content-center gap-3 mb-5 animate-fade-in" style="animation-delay:0.5s;">
+          <a href="{{ url_for('index') }}" class="btn btn-restart">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Mulai Ulang
+          </a>
+          <button onclick="window.print()" class="btn btn-outline-ghost">
+            <i class="bi bi-printer me-1"></i> Cetak Hasil
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Animate score bars on load
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.querySelectorAll(".score-bar-fill").forEach(bar => {
+        const target = bar.getAttribute("data-target");
+        bar.style.transition = "width 1s cubic-bezier(0.4,0,0.2,1)";
+        bar.style.width = target;
+      });
+    }, 300);
+
+    // Trace accordion chevron toggle
+    document.querySelectorAll(".trace-item-header").forEach(header => {
+      header.addEventListener("click", function() {
+        const icon = this.querySelector(".trace-chevron");
+        const collapsed = this.getAttribute("data-bs-toggle");
+        const targetId = this.getAttribute("data-bs-target");
+        const targetEl = document.querySelector(targetId);
+        if (targetEl && targetEl.classList.contains("show")) {
+          icon.style.transform = "rotate(0deg)";
+        } else {
+          icon.style.transform = "rotate(180deg)";
+        }
+      });
+    });
+
+    // Init opened trace chevrons
+    document.querySelectorAll(".collapse.show").forEach(el => {
+      const id = "#" + el.id;
+      const header = document.querySelector(`[data-bs-target="${id}"] .trace-chevron`);
+      if (header) header.style.transform = "rotate(180deg)";
+    });
+  });
+</script>
+{% endblock %}

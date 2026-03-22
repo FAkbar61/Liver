@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% block title %}Skrining Penyakit Liver — LiverAI{% endblock %}
+
+{% block content %}
+
+<!-- ─── HERO SECTION ──────────────────────────────────── -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-8">
+        <div class="hero-badge mb-3">
+          <i class="bi bi-shield-check me-1"></i> Skrining Berbasis AI
+        </div>
+        <h1 class="hero-title">Kenali Kondisi <span class="gradient-text">Hati Anda</span></h1>
+        <p class="hero-subtitle">
+          Jawab pertanyaan berikut untuk membantu mengidentifikasi kemungkinan kondisi hati Anda. 
+          Sistem pakar ini menggunakan <strong>Forward Chaining</strong> berbasis 36 aturan medis.
+        </p>
+        <div class="hero-stats d-flex justify-content-center gap-4 mt-4">
+          <div class="stat-item">
+            <div class="stat-num">25</div>
+            <div class="stat-label">Parameter</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-num">36</div>
+            <div class="stat-label">Aturan</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Kategori Penyakit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FORM WIZARD ───────────────────────────────────── -->
+<section class="form-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+
+        <!-- Progress Bar -->
+        <div class="wizard-progress mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="progress-label">Langkah <span id="currentStep">1</span> dari 4</span>
+            <span class="progress-label"><span id="progressPct">0</span>% selesai</span>
+          </div>
+          <div class="progress progress-custom">
+            <div id="wizardProgress" class="progress-bar progress-bar-animated" role="progressbar" style="width: 25%"></div>
+          </div>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="step-indicators mb-4">
+          <div class="step-ind active" data-step="1">
+            <div class="step-ind-circle">1</div>
+            <div class="step-ind-label">Gejala Utama</div>
+          </div>
+          <div class="step-ind-line"></div>
+          <div class="step-ind" data-step="2">
+            <div class="step-ind-circle">2</div>
+            <div class="step-ind-label">Gejala Umum</div>
+          </div>
+          <div class="step-ind-line"></div>
+          <div class="step-ind" data-step="3">
+            <div class="step-ind-circle">3</div>
+            <div class="step-ind-label">Red Flag</div>
+          </div>
+          <div class="step-ind-line"></div>
+          <div class="step-ind" data-step="4">
+            <div class="step-ind-circle">4</div>
+            <div class="step-ind-label">Riwayat</div>
+          </div>
+        </div>
+
+        <form action="{{ url_for('result') }}" method="POST" id="symptomForm">
+
+          <!-- ── STEP 1: GEJALA UTAMA ─────────────────── -->
+          <div class="wizard-step active" id="step-1">
+            <div class="step-card">
+              <div class="step-header">
+                <div class="step-icon-wrap">
+                  <i class="bi bi-activity"></i>
+                </div>
+                <div>
+                  <h2 class="step-title">Gejala Utama</h2>
+                  <p class="step-desc">Pilih semua gejala yang Anda rasakan saat ini</p>
+                </div>
+              </div>
+              <div class="symptoms-grid">
+                {% for symptom in symptoms if symptom.category == "Gejala Utama" %}
+                <div class="symptom-card" id="card-{{ symptom.id }}">
+                  <input type="hidden" name="{{ symptom.id }}" value="false" id="hidden-{{ symptom.id }}" />
+                  <label class="symptom-label" for="chk-{{ symptom.id }}">
+                    <div class="symptom-check-wrap">
+                      <div class="custom-checkbox" id="cb-{{ symptom.id }}">
+                        <i class="bi bi-check-lg"></i>
+                      </div>
+                    </div>
+                    <div class="symptom-text">
+                      <div class="symptom-name">{{ symptom.label }}</div>
+                      <div class="symptom-hint">{{ symptom.description }}</div>
+                    </div>
+                  </label>
+                  <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
+                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="step-nav d-flex justify-content-end mt-3">
+              <button type="button" class="btn btn-next" onclick="goStep(2)">
+                Selanjutnya <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 2: GEJALA UMUM ─────────────────── -->
+          <div class="wizard-step" id="step-2">
+            <div class="step-card">
+              <div class="step-header">
+                <div class="step-icon-wrap" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                  <i class="bi bi-lungs"></i>
+                </div>
+                <div>
+                  <h2 class="step-title">Gejala Umum</h2>
+                  <p class="step-desc">Gejala tambahan yang sering menyertai penyakit hati</p>
+                </div>
+              </div>
+              <div class="symptoms-grid">
+                {% for symptom in symptoms if symptom.category == "Gejala Umum" %}
+                <div class="symptom-card" id="card-{{ symptom.id }}">
+                  <input type="hidden" name="{{ symptom.id }}" value="false" id="hidden-{{ symptom.id }}" />
+                  <label class="symptom-label" for="chk-{{ symptom.id }}">
+                    <div class="symptom-check-wrap">
+                      <div class="custom-checkbox" id="cb-{{ symptom.id }}">
+                        <i class="bi bi-check-lg"></i>
+                      </div>
+                    </div>
+                    <div class="symptom-text">
+                      <div class="symptom-name">{{ symptom.label }}</div>
+                      <div class="symptom-hint">{{ symptom.description }}</div>
+                    </div>
+                  </label>
+                  <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
+                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="step-nav d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-prev" onclick="goStep(1)">
+                <i class="bi bi-arrow-left me-1"></i> Kembali
+              </button>
+              <button type="button" class="btn btn-next" onclick="goStep(3)">
+                Selanjutnya <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 3: RED FLAG ────────────────────── -->
+          <div class="wizard-step" id="step-3">
+            <div class="step-card red-flag-card">
+              <div class="step-header">
+                <div class="step-icon-wrap" style="background: linear-gradient(135deg, #f72585, #b5179e);">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <div>
+                  <h2 class="step-title">Tanda Bahaya <span class="badge badge-danger-pulse ms-2">Penting!</span></h2>
+                  <p class="step-desc">Gejala berikut memerlukan penanganan segera. Jujurlah dalam menjawab.</p>
+                </div>
+              </div>
+              <div class="red-flag-warning-box mb-3">
+                <i class="bi bi-hospital me-2"></i>
+                Jika Anda mengalami salah satu gejala di bawah ini, <strong>segera kunjungi IGD rumah sakit terdekat</strong>.
+              </div>
+              <div class="symptoms-grid">
+                {% for symptom in symptoms if symptom.category == "Red Flag" %}
+                <div class="symptom-card symptom-card-danger" id="card-{{ symptom.id }}">
+                  <input type="hidden" name="{{ symptom.id }}" value="false" id="hidden-{{ symptom.id }}" />
+                  <label class="symptom-label" for="chk-{{ symptom.id }}">
+                    <div class="symptom-check-wrap">
+                      <div class="custom-checkbox custom-checkbox-danger" id="cb-{{ symptom.id }}">
+                        <i class="bi bi-check-lg"></i>
+                      </div>
+                    </div>
+                    <div class="symptom-text">
+                      <div class="symptom-name">{{ symptom.label }}</div>
+                      <div class="symptom-hint">{{ symptom.description }}</div>
+                    </div>
+                  </label>
+                  <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
+                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="step-nav d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-prev" onclick="goStep(2)">
+                <i class="bi bi-arrow-left me-1"></i> Kembali
+              </button>
+              <button type="button" class="btn btn-next" onclick="goStep(4)">
+                Selanjutnya <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 4: RIWAYAT MEDIS ───────────────── -->
+          <div class="wizard-step" id="step-4">
+            <div class="step-card">
+              <div class="step-header">
+                <div class="step-icon-wrap" style="background: linear-gradient(135deg, #a8ff78, #78ffd6);">
+                  <i class="bi bi-journal-medical" style="color: #0f3d2e;"></i>
+                </div>
+                <div>
+                  <h2 class="step-title">Riwayat & Pemeriksaan</h2>
+                  <p class="step-desc">Informasi riwayat medis dan faktor risiko Anda</p>
+                </div>
+              </div>
+              <div class="symptoms-grid">
+                {% for symptom in symptoms if symptom.category in ["Riwayat Medis", "Hasil Pemeriksaan"] %}
+                <div class="symptom-card" id="card-{{ symptom.id }}">
+                  <input type="hidden" name="{{ symptom.id }}" value="false" id="hidden-{{ symptom.id }}" />
+                  <label class="symptom-label" for="chk-{{ symptom.id }}">
+                    <div class="symptom-check-wrap">
+                      <div class="custom-checkbox" id="cb-{{ symptom.id }}">
+                        <i class="bi bi-check-lg"></i>
+                      </div>
+                    </div>
+                    <div class="symptom-text">
+                      <div class="symptom-name">{{ symptom.label }}</div>
+                      <div class="symptom-hint">{{ symptom.description }}</div>
+                    </div>
+                  </label>
+                  <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
+                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Selected Summary -->
+            <div class="selected-summary mt-3" id="selectedSummary" style="display:none;">
+              <div class="selected-summary-inner">
+                <i class="bi bi-check2-circle me-2 text-success"></i>
+                Anda memilih <strong id="selectedCount">0</strong> gejala/faktor risiko
+              </div>
+            </div>
+
+            <div class="step-nav d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-prev" onclick="goStep(3)">
+                <i class="bi bi-arrow-left me-1"></i> Kembali
+              </button>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-reset" onclick="resetForm()">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                </button>
+                <button type="submit" class="btn btn-process" id="submitBtn">
+                  <span class="btn-process-content">
+                    <i class="bi bi-cpu me-1"></i> Proses Inferensi
+                  </span>
+                  <span class="btn-process-loading d-none">
+                    <span class="spinner-border spinner-border-sm me-2"></span>Memproses...
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
