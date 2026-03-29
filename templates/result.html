@@ -23,7 +23,8 @@
             </div>
             <div>
               <h4 class="mb-1 fw-700">⚠️ SEGERA KE IGD RUMAH SAKIT</h4>
-              <p class="mb-2">Sistem mendeteksi <strong>{{ result.red_flags|length }} tanda bahaya</strong> yang memerlukan penanganan medis segera.</p>
+              <p class="mb-2">Sistem mendeteksi <strong>{{ result.red_flags|length }} tanda bahaya</strong> yang
+                memerlukan penanganan medis segera.</p>
               <ul class="mb-0 ps-3">
                 {% for rf in result.red_flags %}
                 <li class="mb-1"><strong>[{{ rf.rule_id }}]</strong> {{ rf.message }}</li>
@@ -45,7 +46,8 @@
             <div class="symptom-tags">
               {% for s in selected_symptoms %}
               <span class="symptom-tag {% if s.red_flag %}symptom-tag-danger{% endif %}">
-                {% if s.red_flag %}<i class="bi bi-exclamation-triangle-fill me-1"></i>{% else %}<i class="bi bi-check-circle-fill me-1"></i>{% endif %}
+                {% if s.red_flag %}<i class="bi bi-exclamation-triangle-fill me-1"></i>{% else %}<i
+                  class="bi bi-check-circle-fill me-1"></i>{% endif %}
                 {{ s.label | replace(" ⚠️ RED FLAG", "") }}
               </span>
               {% endfor %}
@@ -62,12 +64,15 @@
           </div>
           <h3 class="no-result-title">Data Belum Cukup</h3>
           <p class="no-result-desc">
-            Berdasarkan gejala yang Anda laporkan, sistem belum dapat mengidentifikasi pola penyakit hati yang signifikan dengan keyakinan yang cukup. 
-            Hal ini <strong>tidak berarti Anda sehat</strong> — bisa jadi gejala masih awal atau perlu pemeriksaan lebih lanjut.
+            Berdasarkan gejala yang Anda laporkan, sistem belum dapat mengidentifikasi pola penyakit hati yang
+            signifikan dengan keyakinan yang cukup.
+            Hal ini <strong>tidak berarti Anda sehat</strong> — bisa jadi gejala masih awal atau perlu pemeriksaan lebih
+            lanjut.
           </p>
           <div class="alert alert-info-custom mt-3">
             <i class="bi bi-info-circle-fill me-2"></i>
-            <strong>Rekomendasi:</strong> Konsultasikan kondisi Anda ke dokter atau klinik kesehatan untuk pemeriksaan fisik dan laboratorium yang lebih menyeluruh.
+            <strong>Rekomendasi:</strong> Konsultasikan kondisi Anda ke dokter atau klinik kesehatan untuk pemeriksaan
+            fisik dan laboratorium yang lebih menyeluruh.
           </div>
         </div>
         {% endif %}
@@ -104,11 +109,9 @@
               </div>
               <div class="score-bar-wrap">
                 <div class="score-bar">
-                  <div class="score-bar-fill score-fill-{{ item.confidence_class }}" 
-                       style="width: 0%"
-                       data-target="{{ item.score_percent }}%"
-                       aria-valuenow="{{ item.score_percent }}"
-                       aria-valuemin="0" aria-valuemax="100">
+                  <div class="score-bar-fill score-fill-{{ item.confidence_class }}" style="width: 0%"
+                    data-target="{{ item.score_percent }}%" aria-valuenow="{{ item.score_percent }}" aria-valuemin="0"
+                    aria-valuemax="100">
                   </div>
                 </div>
               </div>
@@ -149,17 +152,17 @@
         {% endif %}
 
         <!-- ══ INFERENCE TRACE ════════════════════════════ -->
-        {% if result.fired_rules %}
         <div class="result-card mb-4 animate-fade-in" style="animation-delay: 0.4s;">
           <div class="result-card-header d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-cpu me-2"></i> Kenapa Hasil Ini Keluar?</span>
+            <span><i class="bi bi-list-check me-2"></i> Penjelasan Analisis</span>
             <span class="badge-count">{{ result.total_rules_fired }} aturan aktif</span>
           </div>
           <div class="result-card-body">
             <p class="text-muted-light small mb-3">
-              Penjelasan penalaran mesin Forward Chaining — aturan mana yang terpicu dan mengapa.
+              Berikut adalah penjelasan mengapa sistem memberikan hasil ini — gejala mana yang cocok dengan aturan yang ada.
             </p>
 
+            {% if result.fired_rules %}
             <div class="trace-meta mb-3 d-flex gap-4">
               <div class="trace-meta-item">
                 <i class="bi bi-arrow-repeat me-1 text-primary"></i>
@@ -167,7 +170,7 @@
               </div>
               <div class="trace-meta-item">
                 <i class="bi bi-lightning-fill me-1 text-warning"></i>
-                <strong>{{ result.total_rules_fired }}</strong> rule aktif
+                <strong>{{ result.total_rules_fired }}</strong> aturan cocok
               </div>
             </div>
 
@@ -225,9 +228,23 @@
               </div>
               {% endfor %}
             </div>
+
+            {% else %}
+            <div class="trace-empty-box">
+              <i class="bi bi-info-circle fs-5 me-3 flex-shrink-0"></i>
+              <div>
+                <strong>Tidak ada aturan yang cocok dengan gejala yang dipilih.</strong>
+                <p class="mb-0 mt-1">
+                  Sistem memeriksa {{ result.iterations }} iterasi terhadap seluruh basis aturan,
+                  namun tidak ditemukan kombinasi gejala yang memenuhi syarat aturan manapun.
+                  Coba pilih lebih banyak gejala agar sistem dapat memberikan analisis yang lebih lengkap.
+                </p>
+              </div>
+            </div>
+            {% endif %}
+
           </div>
         </div>
-        {% endif %}
 
         <!-- ══ ACTION BUTTONS ═════════════════════════════ -->
         <div class="d-flex justify-content-center gap-3 mb-5 animate-fade-in" style="animation-delay:0.5s;">
@@ -259,7 +276,7 @@
 
     // Trace accordion chevron toggle
     document.querySelectorAll(".trace-item-header").forEach(header => {
-      header.addEventListener("click", function() {
+      header.addEventListener("click", function () {
         const icon = this.querySelector(".trace-chevron");
         const collapsed = this.getAttribute("data-bs-toggle");
         const targetId = this.getAttribute("data-bs-target");

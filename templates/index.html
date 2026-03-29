@@ -13,7 +13,7 @@
         </div>
         <h1 class="hero-title">Kenali Kondisi <span class="gradient-text">Hati Anda</span></h1>
         <p class="hero-subtitle">
-          Jawab pertanyaan berikut untuk membantu mengidentifikasi kemungkinan kondisi hati Anda. 
+          Jawab pertanyaan berikut untuk membantu mengidentifikasi kemungkinan kondisi hati Anda.
           Sistem pakar ini menggunakan <strong>Forward Chaining</strong> berbasis 36 aturan medis.
         </p>
         <div class="hero-stats d-flex justify-content-center gap-4 mt-4">
@@ -50,7 +50,8 @@
             <span class="progress-label"><span id="progressPct">0</span>% selesai</span>
           </div>
           <div class="progress progress-custom">
-            <div id="wizardProgress" class="progress-bar progress-bar-animated" role="progressbar" style="width: 25%"></div>
+            <div id="wizardProgress" class="progress-bar progress-bar-animated" role="progressbar" style="width: 25%">
+            </div>
           </div>
         </div>
 
@@ -107,7 +108,8 @@
                     </div>
                   </label>
                   <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
-                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                    data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}"
+                    data-cb="cb-{{ symptom.id }}" />
                 </div>
                 {% endfor %}
               </div>
@@ -147,7 +149,8 @@
                     </div>
                   </label>
                   <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
-                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                    data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}"
+                    data-cb="cb-{{ symptom.id }}" />
                 </div>
                 {% endfor %}
               </div>
@@ -176,7 +179,8 @@
               </div>
               <div class="red-flag-warning-box mb-3">
                 <i class="bi bi-hospital me-2"></i>
-                Jika Anda mengalami salah satu gejala di bawah ini, <strong>segera kunjungi IGD rumah sakit terdekat</strong>.
+                Jika Anda mengalami salah satu gejala di bawah ini, <strong>segera kunjungi IGD rumah sakit
+                  terdekat</strong>.
               </div>
               <div class="symptoms-grid">
                 {% for symptom in symptoms if symptom.category == "Red Flag" %}
@@ -194,7 +198,8 @@
                     </div>
                   </label>
                   <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
-                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                    data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}"
+                    data-cb="cb-{{ symptom.id }}" />
                 </div>
                 {% endfor %}
               </div>
@@ -237,7 +242,8 @@
                     </div>
                   </label>
                   <input type="checkbox" class="d-none symptom-checkbox" id="chk-{{ symptom.id }}"
-                         data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}" data-cb="cb-{{ symptom.id }}" />
+                    data-target="hidden-{{ symptom.id }}" data-card="card-{{ symptom.id }}"
+                    data-cb="cb-{{ symptom.id }}" />
                 </div>
                 {% endfor %}
               </div>
